@@ -60,9 +60,25 @@ Clic en el punto, con cualquiera de los dos botones (el menú está en inglés):
 
 Sólo puede haber una instancia (una copia en marcha) a la vez. Si lo lanzas otra vez mientras ya está funcionando, la segunda instancia detecta que la primera sigue en marcha y se cierra sola, sin hacer nada: siempre queda un único punto.
 
+### Añadirlo al menú Inicio (opcional)
+
+ping-tray no se añade solo al menú Inicio, pero puedes hacerlo con un comando. Abre PowerShell y pega esta línea, cambiando lo que va entre las primeras comillas por la carpeta donde tengas `ping-tray.bat` (tal como está, sirve para la opción B):
+
+```powershell
+$dir = "$env:LOCALAPPDATA\ping-tray"; $s = (New-Object -ComObject WScript.Shell).CreateShortcut("$([Environment]::GetFolderPath('Programs'))\ping-tray.lnk"); $s.TargetPath = "$dir\ping-tray.bat"; $s.WorkingDirectory = $dir; $s.WindowStyle = 7; $s.Save()
+```
+
+Por ejemplo, si lo tienes en `Documentos\ping-tray`, la línea empezaría por `$dir = "C:\Users\<tu usuario>\Documents\ping-tray";`.
+
+Aparece **ping-tray** en la lista de aplicaciones del menú Inicio, y desde ahí puedes anclarlo. Lleva el icono genérico de los `.bat`. Si mueves la carpeta, quítalo y vuelve a crearlo. Para quitarlo:
+
+```powershell
+Remove-Item "$([Environment]::GetFolderPath('Programs'))\ping-tray.lnk"
+```
+
 ### Quitarlo
 
-Desmarca **Start with Windows** y **Sound**, pulsa **Exit** y borra la carpeta (con la opción B, la carpeta es `C:\Users\<tu usuario>\AppData\Local\ping-tray`; para llegar rápido, escribe `%LOCALAPPDATA%\ping-tray` en la barra de direcciones del Explorador de archivos). No queda nada más.
+Desmarca **Start with Windows** y **Sound**, pulsa **Exit** y borra la carpeta (con la opción B, la carpeta es `C:\Users\<tu usuario>\AppData\Local\ping-tray`; para llegar rápido, escribe `%LOCALAPPDATA%\ping-tray` en la barra de direcciones del Explorador de archivos). Si lo añadiste al menú Inicio, quítalo también con el comando de arriba. No queda nada más.
 
 ## Cambiar el destino u otros ajustes
 
