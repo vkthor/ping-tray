@@ -21,6 +21,7 @@ Lee `docs/PLAN.md` al empezar: tiene las decisiones tomadas y las fases de traba
 |---|---|
 | `ping-tray.ps1` | El programa. |
 | `ping-tray.bat` | Una línea: arranca el script sin ventana con `conhost --headless`. |
+| `README.md` / `README.es.md` | La página del proyecto, en inglés (la principal) y en español, con el enlace para cambiar de idioma arriba, como en `vkthor/redes-movil-adb`. **Cualquier cambio se hace en los dos.** |
 | `LICENSE` | Texto oficial de la GPL-3.0. |
 | `docs/PLAN.md` | Decisiones y fases. |
 | `CHANGELOG.md` | Cambios por versión. |

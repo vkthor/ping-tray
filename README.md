@@ -1,109 +1,110 @@
 # ping-tray
 
-**Un punto de color en la bandeja de Windows que te dice si tienes internet.**
-*A tiny Windows tray dot that tells you, at a glance, whether your connection is alive. One readable PowerShell script, no install, no admin rights, ~100 KB/hour of traffic.*
+**English** | [Español](README.es.md)
 
-| Color | Significa |
+**A colored dot in the Windows system tray that tells you whether you're online.** One readable PowerShell script, nothing to install, no admin rights, and about 100 KB of traffic per hour.
+
+| Color | Meaning |
 |---|---|
-| 🟢 Verde | Conexión buena |
-| 🟠 Naranja | Lenta (más de 400 ms) o un ping perdido suelto |
-| 🔴 Rojo | Sin conexión (dos pings seguidos perdidos) |
-| ⚪ Gris | Arrancando |
+| 🟢 Green | Connection is fine |
+| 🟠 Orange | Slow (over 400 ms) or a single lost ping |
+| 🔴 Red | No connection (two lost pings in a row) |
+| ⚪ Gray | Starting up |
 
-![Los tres colores del punto: verde, naranja y rojo](docs/img/estados.png)
+![The three colors of the dot: green, orange and red](docs/img/estados.png)
 
-Al pasar el ratón por encima ves la latencia y la hora, o desde cuándo estás sin conexión:
+Hover over it to see the latency and the time, or since when you've been offline:
 
-![Conectado: OK, 5 ms](docs/img/tooltip-ok.png) ![Sin conexión desde las 12:29:27](docs/img/tooltip-offline.png)
+![Connected: OK, 5 ms](docs/img/tooltip-ok.png) ![Offline since 12:29:27](docs/img/tooltip-offline.png)
 
-## Para qué lo uso
+## Why I use it
 
-Viajo mucho en tren y trabajo conectado al punto de acceso del móvil. Esa conexión va y viene: túneles, zonas sin cobertura, cambios de antena. Antes tenía siempre abierta una ventana con `ping -t 8.8.8.8` y la miraba cada vez que algo iba lento, para saber si el problema era la red o la página.
+I travel a lot by train and work tethered to my phone's hotspot. That connection comes and goes: tunnels, dead zones, cell handovers. I used to keep a `ping -t 8.8.8.8` window open and check it whenever something felt slow, to know whether the problem was the network or the website.
 
-ping-tray hace lo mismo sin ventana: un vistazo a la bandeja y sabes si merece la pena esperar o si estás en un túnel.
+ping-tray does the same without a window: one glance at the tray and you know whether it's worth waiting or you're in a tunnel.
 
-## Qué hace exactamente
+## What it does, exactly
 
-- Manda un ping de 8 bytes a `8.8.8.8` cada 3 segundos. Son unos **100 KB por hora**, frente a los ~430 KB/h de `ping -t` (un ping de 32 bytes por segundo).
-- Tolera un ping perdido suelto (pasa a naranja, no a rojo), porque en una conexión móvil es normal y no significa que se haya caído.
-- **No se instala, no necesita administrador** y **no cambia nada del sistema**: ni servicios, ni red, ni configuración. Lo único que puede crear, y sólo si se lo pides, es lo necesario para abrirse solo al iniciar sesión (con **Start with Windows**) y una clave en tu parte del registro para recordar que quieres sonido (con **Sound**).
-- Son dos archivos: [`ping-tray.ps1`](ping-tray.ps1), el programa, y [`ping-tray.bat`](ping-tray.bat), una línea que lo arranca sin ventana. Léelos antes de usarlos.
+- It sends an 8-byte ping to `8.8.8.8` every 3 seconds. That's about **100 KB per hour**, versus ~430 KB/h for `ping -t` (one 32-byte ping per second).
+- It tolerates a single lost ping (orange, not red), because on a mobile connection that's normal and doesn't mean the connection is down.
+- **Nothing to install, no admin rights**, and **it doesn't change anything on your system**: no services, no network settings, no configuration. The only things it may create, and only if you ask, are what it needs to open by itself when you sign in (with **Start with Windows**) and a key in your part of the registry to remember that you want sound (with **Sound**).
+- It's two files: [`ping-tray.ps1`](ping-tray.ps1), the program, and [`ping-tray.bat`](ping-tray.bat), one line that starts it without a window. Read them before you use them.
 
-## Cómo usarlo
+## How to use it
 
-Necesitas Windows 10 u 11. No hace falta instalar nada más. (Probado en Windows 11.)
+You need Windows 10 or 11. Nothing else to install. (Tested on Windows 11.)
 
-### Opción A (recomendada): descargarlo
+### Option A (recommended): download it
 
-1. Entra en la [última release](https://github.com/vkthor/ping-tray/releases/latest) y descarga los dos archivos: **`ping-tray.ps1`** y **`ping-tray.bat`**.
-2. Ponlos juntos en la misma carpeta, la que quieras (por ejemplo, `Documentos\ping-tray`).
-3. Doble clic en **`ping-tray.bat`**. Aparece el punto en la bandeja (puede que tengas que abrir la flechita `^` para verlo; arrástralo fuera si lo quieres siempre a la vista).
+1. Go to the [latest release](https://github.com/vkthor/ping-tray/releases/latest) and download both files: **`ping-tray.ps1`** and **`ping-tray.bat`**.
+2. Put them together in the same folder, whichever you like (for example, `Documents\ping-tray`).
+3. Double-click **`ping-tray.bat`**. The dot appears in the tray (you may have to open the little `^` arrow to see it; drag it out if you want it always visible).
 
-### Opción B: con una sola línea
+### Option B: with a single line
 
-Hace lo mismo que la opción A, pero sin ir a la página: descarga los dos archivos a la carpeta `%LOCALAPPDATA%\ping-tray` y lo arranca. `%LOCALAPPDATA%` es una carpeta de tu usuario que normalmente está en `C:\Users\<tu usuario>\AppData\Local`, así que los archivos quedan en `C:\Users\<tu usuario>\AppData\Local\ping-tray`. Abre PowerShell (clic derecho en el botón de Inicio → **Terminal**) y pega:
+It does the same as option A, without visiting the page: it downloads both files to the `%LOCALAPPDATA%\ping-tray` folder and starts it. `%LOCALAPPDATA%` is a folder of your user account that is normally at `C:\Users\<your user>\AppData\Local`, so the files end up in `C:\Users\<your user>\AppData\Local\ping-tray`. Open PowerShell (right-click the Start button → **Terminal**) and paste:
 
 ```powershell
 $d = "$env:LOCALAPPDATA\ping-tray"; mkdir $d -Force > $null; 'ping-tray.ps1', 'ping-tray.bat' | ForEach-Object { irm "https://github.com/vkthor/ping-tray/releases/latest/download/$_" -OutFile "$d\$_" }; & "$d\ping-tray.bat"
 ```
 
-Aparece el punto y ya puedes cerrar la ventana. A partir de ahí funciona igual que con la opción A, también sin conexión. Para volver a arrancarlo, doble clic en `ping-tray.bat` de esa carpeta (o marca **Start with Windows**). Si vuelves a pegar la línea, descarga la última versión encima.
+The dot appears and you can close the window. From then on it works just like option A, offline too. To start it again, double-click `ping-tray.bat` in that folder (or tick **Start with Windows**). If you paste the line again, it downloads the latest version over the old one.
 
-### El menú
+### The menu
 
-Clic en el punto, con cualquiera de los dos botones (el menú está en inglés):
+Click the dot, with either mouse button:
 
-- **Start with Windows**: con marca, ping-tray se abre solo cada vez que inicias sesión en Windows. Se desmarca igual. También aparece en el Administrador de tareas, en **Aplicaciones de arranque**, como ping-tray, y lo puedes activar o desactivar desde ahí: la marca del menú se pone de acuerdo con lo que elijas. Recuerda en qué carpeta está el script: si lo mueves de carpeta, desmárcalo y vuelve a marcarlo.
-- **Sound**: con marca, suena un aviso cuando se corta la conexión (pasa a rojo) y otro distinto cuando vuelve. Un ping perdido suelto o un momento lento no suenan. Viene apagado; si lo activas, se acuerda para la próxima vez. Usa dos sonidos que ya trae Windows, del antiguo reconocimiento de voz, para no confundirlos con los avisos habituales. Como vienen grabados muy flojos, ping-tray los sube de volumen (sin cambiar el volumen de Windows); el nivel se ajusta en la configuración del script.
-- **About**: versión y enlace a esta página.
-- **Exit**: lo cierra.
+- **Start with Windows**: when ticked, ping-tray opens by itself every time you sign in to Windows. Untick it the same way. It also shows up in Task Manager, under **Startup apps**, as ping-tray, and you can enable or disable it there: the tick in the menu follows whatever you choose. It remembers which folder the script is in: if you move it, untick and tick it again.
+- **Sound**: when ticked, it plays a warning when the connection drops (turns red) and a different sound when it comes back. A single lost ping or a slow moment doesn't make a sound. It's off by default; if you turn it on, it remembers it for next time. It uses two sounds that come with Windows, from the old speech recognition feature, so they don't get mixed up with the usual alerts. They're recorded very quietly, so ping-tray turns them up (without changing the Windows volume); the level can be set in the script's settings.
+- **About**: version and a link to this page.
+- **Exit**: closes it.
 
-Sólo puede haber una instancia (una copia en marcha) a la vez. Si lo lanzas otra vez mientras ya está funcionando, la segunda instancia detecta que la primera sigue en marcha y se cierra sola, sin hacer nada: siempre queda un único punto.
+Only one instance (one running copy) can exist at a time. If you start it again while it's running, the second instance detects that the first is still running and quietly closes: you always end up with a single dot.
 
-### Añadirlo al menú Inicio (opcional)
+### Add it to the Start menu (optional)
 
-ping-tray no se añade solo al menú Inicio, pero puedes hacerlo con un comando. Abre PowerShell y pega esta línea, cambiando lo que va entre las primeras comillas por la carpeta donde tengas `ping-tray.bat` (tal como está, sirve para la opción B):
+ping-tray doesn't add itself to the Start menu, but you can do it with one command. Open PowerShell and paste this line, replacing what's inside the first quotes with the folder where your `ping-tray.bat` is (as it is, it works for option B):
 
 ```powershell
 $dir = "$env:LOCALAPPDATA\ping-tray"; $s = (New-Object -ComObject WScript.Shell).CreateShortcut("$([Environment]::GetFolderPath('Programs'))\ping-tray.lnk"); $s.TargetPath = "$dir\ping-tray.bat"; $s.WorkingDirectory = $dir; $s.WindowStyle = 7; $s.Save()
 ```
 
-Por ejemplo, si lo tienes en `Documentos\ping-tray`, la línea empezaría por `$dir = "C:\Users\<tu usuario>\Documents\ping-tray";`.
+For example, if you keep it in `Documents\ping-tray`, the line would start with `$dir = "C:\Users\<your user>\Documents\ping-tray";`.
 
-Aparece **ping-tray** en la lista de aplicaciones del menú Inicio, y desde ahí puedes anclarlo. Lleva el icono genérico de los `.bat`. Si mueves la carpeta, quítalo y vuelve a crearlo. Para quitarlo:
+**ping-tray** appears in the Start menu's app list, and you can pin it from there. It has the generic `.bat` icon. If you move the folder, remove it and create it again. To remove it:
 
 ```powershell
 Remove-Item "$([Environment]::GetFolderPath('Programs'))\ping-tray.lnk"
 ```
 
-### Quitarlo
+### Remove it
 
-Desmarca **Start with Windows** y **Sound**, pulsa **Exit** y borra la carpeta (con la opción B, la carpeta es `C:\Users\<tu usuario>\AppData\Local\ping-tray`; para llegar rápido, escribe `%LOCALAPPDATA%\ping-tray` en la barra de direcciones del Explorador de archivos). Si lo añadiste al menú Inicio, quítalo también con el comando de arriba. No queda nada más.
+Untick **Start with Windows** and **Sound**, click **Exit** and delete the folder (with option B, the folder is `C:\Users\<your user>\AppData\Local\ping-tray`; to get there quickly, type `%LOCALAPPDATA%\ping-tray` in File Explorer's address bar). If you added it to the Start menu, remove that too with the command above. Nothing else is left behind.
 
-## Cambiar el destino u otros ajustes
+## Changing the target or other settings
 
-Abre `ping-tray.ps1` con el Bloc de notas. Al principio está la configuración: a quién se hace ping, cada cuánto, cuánto se espera la respuesta, a partir de cuántos milisegundos se considera lento, y qué sonidos se usan y a qué volumen. Cambia lo que quieras, guarda, y sal y vuelve a arrancar el punto.
+Open `ping-tray.ps1` in Notepad. The settings are at the top: what to ping, how often, how long to wait for a reply, from how many milliseconds a reply counts as slow, and which sounds to use and how loud. Change whatever you like, save, then exit and start the dot again.
 
-## Por qué un `.ps1` y no un `.exe`
+## Why a `.ps1` and not an `.exe`
 
-Porque cualquiera puede abrirlo y ver lo que hace. Un programa que corre siempre en segundo plano y usa la red debería poder leerse en cinco minutos.
+Because anyone can open it and see what it does. A program that runs in the background all the time and uses the network should be readable in five minutes.
 
-Además, con cualquiera de las dos opciones lo que se ejecuta es siempre la copia que tienes en tu PC, no algo descargado en ese momento. Así el indicador arranca aunque no haya internet, que es justo cuando más falta hace.
+Also, with either option, what runs is always the copy on your PC, not something downloaded at that moment. So the indicator starts even when there's no internet, which is exactly when you need it most.
 
-## Preguntas
+## Questions
 
-**¿Por qué 8.8.8.8?** Es el DNS de Google, responde a ping desde casi cualquier red y casi nunca se cae. Puedes cambiarlo a `1.1.1.1` (Cloudflare) en la configuración del script.
+**Why 8.8.8.8?** It's Google's DNS: it answers pings from almost any network and is almost never down. You can change it to `1.1.1.1` (Cloudflare) in the script's settings.
 
-**Windows dice que el script no está firmado o que no se puede ejecutar.** Windows bloquea por defecto los scripts de PowerShell. El `.bat` usa `-ExecutionPolicy Bypass` sólo para este script, sin cambiar la política del sistema.
+**Windows says the script isn't signed or can't be run.** By default, Windows blocks PowerShell scripts. The `.bat` uses `-ExecutionPolicy Bypass` only for this script, without changing the system policy.
 
-**Windows muestra un aviso de seguridad al abrir el `.bat`.** Windows marca los archivos descargados de internet, y al abrir un `.bat` descargado puede preguntar si quieres ejecutarlo («Advertencia de seguridad» o «Windows protegió su PC»). Es normal en cualquier programa descargado que no sea de una tienda. Para que no vuelva a preguntar: clic derecho en `ping-tray.bat` → **Propiedades** → marca **Desbloquear** → **Aceptar**. Haz lo mismo con `ping-tray.ps1`.
+**Windows shows a security warning when opening the `.bat`.** Windows marks files downloaded from the internet, and when you open a downloaded `.bat` it may ask whether you want to run it ("Security Warning" or "Windows protected your PC"). That's normal for any program downloaded outside a store. To stop it asking: right-click `ping-tray.bat` → **Properties** → tick **Unblock** → **OK**. Do the same with `ping-tray.ps1`.
 
-**El antivirus avisa o bloquea ping-tray.** Algunos antivirus desconfían de cualquier PowerShell que se ejecute sin ventana, porque es algo que también hacen programas maliciosos. ping-tray no descarga nada y no envía nada más que los pings. Si tu antivirus lo bloquea, lee el script y, si te convence, añádelo a sus excepciones.
+**My antivirus warns about or blocks ping-tray.** Some antivirus programs distrust any PowerShell script that runs without a window, because malware does that too. ping-tray downloads nothing and sends nothing but the pings. If your antivirus blocks it, read the script and, if you're happy with it, add it to its exceptions.
 
-**Al hacer doble clic en el `.bat` (o al iniciar sesión, con Start with Windows) se ve una ventana negra un instante.** Es normal: es el propio `.bat` cerrándose. El punto se queda funcionando sin ventana.
+**A black window flashes briefly when I double-click the `.bat` (or when I sign in, with Start with Windows).** That's normal: it's the `.bat` itself closing. The dot keeps running without a window.
 
-**¿Funciona con VPN?** Sí. Mide si llegas a internet por el camino que esté usando el PC en ese momento.
+**Does it work with a VPN?** Yes. It checks whether you can reach the internet through whatever route the PC is using at the moment.
 
-## Licencia
+## License
 
-[GPL-3.0](LICENSE). Autor: VkThor.
+[GPL-3.0](LICENSE) © 2026 Víctor Cruz

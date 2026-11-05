@@ -38,8 +38,8 @@ Víctor quiso además poder arrancarlo sin descargar nada (`irm … | iex` con r
 
 1. Repo público `vkthor/ping-tray`. ✔
 2. Release `v1.0.0` con `ping-tray.ps1` y `ping-tray.bat` (la opción B descarga de `releases/latest/download/`). Publicada dos veces: la primera se borró por lo de Defender (ver D1). ✔
-3. Probar la opción B del README contra GitHub de verdad.
-4. Capturas del punto en `docs/img/`, recortadas para que no se vea ningún otro icono de la bandeja. El README sigue en español. ✔
+3. Probar la opción B del README contra GitHub de verdad. ✔
+4. Capturas del punto en `docs/img/`, recortadas para que no se vea ningún otro icono de la bandeja. README bilingüe: `README.md` en inglés y `README.es.md` en español, como en redes-movil-adb. ✔
 5. Documentación: los avisos de Windows al abrir un `.bat` descargado y los de los antivirus ya están en el README (Preguntas); repasarlos en el tutorial.
 
 ## Fase 3 — opcional, cuando Víctor lo pida
